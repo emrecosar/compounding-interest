@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: compounding-interest
+  main:
+    web-environment: false
+    banner-mode: "off"
+ 
+logging:
+  level:
+    s7:
+      Application: WARN
+    org:
+      springframework: WARN
+
+interest-constant: 0.9970221
+  
+installement:
+  count-to-pay: 36
+  per-year: 12
+  year: 3
+
+loan:
+  step: 100
+  minimum: 1000
+  maximum: 15000
+  amount-not-valid: Loan amount not valid. Please ensure you have entered a number rounded to the nearest hundred between 1,000 and 15,000
