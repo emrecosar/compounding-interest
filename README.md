@@ -1,4 +1,4 @@
-##Compounding Interest Calculation
+## Compounding Interest Calculation
 
 `Compound Interest Formula		:   A = P(1+r/n)^nt`
 
@@ -18,7 +18,7 @@
 
 e.g. `java -jar target/compounding-interest-0.0.1-SNAPSHOT.jar src/main/resources/market_data.csv 1000`
 
-- Spring Boot startup log settings are closed. IF you want to open it, just check the CIApplication and application.yml file!
+- Spring Boot startup log settings are closed. If you want to open it, just check the CIApplication and application.yml file!
 
 ### Test Instructions
 
@@ -27,7 +27,7 @@ There is a need for a rate calculation system allowing prospective borrowers to 
 You will be provided with a file containing a list of all the offers being made
 by the lenders within the system in CSV format, see the example market.csv file provided alongside this specification.
 
-You should strive to provide as low a rate to the borrower as is possible to ensure that Zopa's quotes are as competitive as they can be against our competitors'. You should also provide the borrower with the details of the monthly repayment amount and the total repayment amount.
+You should strive to provide as low a rate to the borrower as is possible to ensure that Company's quotes are as competitive as they can be against our competitors'. You should also provide the borrower with the details of the monthly repayment amount and the total repayment amount.
 
 Repayment amounts should be displayed to 2 decimal places and the rate of the loan should be displayed to one decimal place.
 
@@ -42,7 +42,8 @@ Borrowers should be able to request a loan of any £100 increment between £1000
      cmd> quote.exe market.csv 1500 ```
 
 **The application should produce output in the form:** 
-```      cmd> [application] [market_file] [loan_amount]     
+```      
+     cmd> [application] [market_file] [loan_amount]     
      Requested amount: £XXXX 
      Rate: X.X%     
      Monthly repayment: £XXXX.XX     
@@ -58,8 +59,5 @@ Borrowers should be able to request a loan of any £100 increment between £1000
      Total repayment: £1108.10  
  ```
  
-## Remarks    
-- We do not mind what language you chose for your implementation  
-- The monthly and total repayment should use monthly compounding interest  
-- We will review your code and run it against some other test cases to see how  it handles them 
-- If you have any questions then don't hesitate to contact us
+## Remarks
+- The monthly and total repayment should use `monthly compounding interest`  
