@@ -9,9 +9,13 @@
 **(0.9970221 is found by reverse computing and some research!)**
 
 P = loan amount
+
 r = rateInDecimal
+
 t = number of year
+
 n = number of compound per unit 12 month 
+
 A = Total to pay by borrower
 
 ### To Run:
