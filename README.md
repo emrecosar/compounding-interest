@@ -8,10 +8,17 @@
 
 **(0.9970221 is found by reverse computing and some research!)**
 
+P = loan amount
+r = rateInDecimal
+t = number of year
+n = number of compound per unit 12 month 
+A = Total to pay by borrower
+
 ### To Run:
 
 - Clone this repo to your local machine.
 - Ensure you have Maven installed (https://maven.apache.org/download.cgi#Installation)
+- Java 8
 - From the main directory, run `mvn clean package`
 - To run the program, use the following command:
 `java -jar target/compounding-interest-1.0.0-SNAPSHOT.jar [path_to_csv_file] [loan_amount]`
