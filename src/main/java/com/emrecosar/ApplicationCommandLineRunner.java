@@ -1,4 +1,4 @@
-package com.emrecosar.ci;
+package com.emrecosar;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.emrecosar.ci.exception.InsufficientParameterException;
-import com.emrecosar.ci.manager.Manager;
-import com.emrecosar.ci.model.Quote;
+import com.emrecosar.manager.Manager;
+import com.emrecosar.model.Quote;
 
 @Component
-public class CICommandLineRunner implements CommandLineRunner {
+public class ApplicationCommandLineRunner implements CommandLineRunner {
 
 	@Autowired
 	Manager manager;
@@ -33,11 +32,20 @@ public class CICommandLineRunner implements CommandLineRunner {
 	@Override
     public void run(String...args) throws Exception {
         
-		if(args.length < 2) 
-			throw new InsufficientParameterException("Application needs 2 parameters to run properly! [args : " + Arrays.toString(args) + "]");
+		if(args.length < 2) { 
+			System.err.println("Application needs 2 parameters to run properly! [args : " + Arrays.toString(args) + "]");
+			return;
+		}
         
-        String filePath = args[0];
-        BigDecimal loanAmount = new BigDecimal(args[1]);
+		String filePath = null;
+		BigDecimal loanAmount = null;
+		try {
+			filePath = args[0];
+			loanAmount = new BigDecimal(args[1]);
+		} catch (NumberFormatException nfe) {
+			System.err.println("Second parameter should be BigDecimal! [args : " + Arrays.toString(args) + "]");
+			return;
+		}
         
         if (loanAmount.compareTo(loanMinimum) < 0 || loanAmount.compareTo(loanMaximum) > 0 
         		|| loanAmount.remainder(loanStep).compareTo(BigDecimal.ZERO) != 0	) {
@@ -46,7 +54,8 @@ public class CICommandLineRunner implements CommandLineRunner {
         }
         
         Quote quote = manager.run(filePath, loanAmount);
-        System.out.println(quote.toString());
+        if(quote != null)
+        		System.out.println(quote.toString());
         
         return;
     }

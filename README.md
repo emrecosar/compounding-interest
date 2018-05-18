@@ -29,7 +29,7 @@ A = Total to pay by borrower
 
 e.g. `java -jar target/compounding-interest-0.0.1-SNAPSHOT.jar src/main/resources/market_data.csv 1000`
 
-- Spring Boot startup log settings are closed. If you want to open it, just check the CIApplication and application.yml file!
+- Spring Boot startup log settings are closed. If you want to open it, just check the Application class and application.yml file!
 
 ### Test Instructions
 

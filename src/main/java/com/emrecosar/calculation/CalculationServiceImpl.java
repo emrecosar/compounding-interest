@@ -1,13 +1,14 @@
-package com.emrecosar.ci.calculation;
+package com.emrecosar.calculation;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.emrecosar.ci.model.Lender;
+import com.emrecosar.model.Lender;
 
 @Service
 public class CalculationServiceImpl implements CalculationService {
@@ -24,10 +25,17 @@ public class CalculationServiceImpl implements CalculationService {
 	private int rateScale = 1;
 	private int rateInDecimalScale = 3;
 	private int amountScale = 2;
+	private int rateInDecimal10Scale = 10; // not to lose value when divide operation 
+	
+	private BigDecimal oneHundred = new BigDecimal(100);
 	
 	@Value("${interest-constant}")
 	private String insterestConstant; 
 
+	@Autowired
+	public CalculationServiceImpl() {
+	}
+	
 	@Override
 	public BigDecimal getMaximumLoanAmount(List<Lender> lenders) {
 		return lenders.stream()
@@ -43,10 +51,10 @@ public class CalculationServiceImpl implements CalculationService {
 	@Override
     public BigDecimal calculateTotalRepayment(BigDecimal rateInDecimal, BigDecimal loanAmount) {
         
-		BigDecimal rateInDecimalPerMonth = rateInDecimal.divide(new BigDecimal(installmentPerYear), 10, RoundingMode.HALF_UP);
+		BigDecimal rateInDecimalPerMonth = rateInDecimal.divide(new BigDecimal(installmentPerYear), rateInDecimal10Scale, RoundingMode.HALF_UP);
 		rateInDecimalPerMonth = rateInDecimalPerMonth.add(new BigDecimal(insterestConstant));
         BigDecimal zopaTotalLoanAmount = rateInDecimalPerMonth.pow(installmentPerYear * installmentYear);
-        return loanAmount.multiply(zopaTotalLoanAmount).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return loanAmount.multiply(zopaTotalLoanAmount).setScale(amountScale, BigDecimal.ROUND_HALF_UP);
     }
 
 	@Override
@@ -70,11 +78,11 @@ public class CalculationServiceImpl implements CalculationService {
 
 	@Override
 	public BigDecimal calculateRate(BigDecimal amountFromLenders, BigDecimal loanAmount) {
-		return amountFromLenders.subtract(loanAmount).divide(loanAmount).multiply(new BigDecimal(100)).setScale(rateScale, RoundingMode.HALF_UP);
+		return amountFromLenders.subtract(loanAmount).divide(loanAmount).multiply(oneHundred).setScale(rateScale, RoundingMode.HALF_UP);
 	}
 
 	@Override
 	public BigDecimal calculateRateInDecimal(BigDecimal rate) {
-		return rate.divide(new BigDecimal(100), rateInDecimalScale, RoundingMode.HALF_UP);
+		return rate.divide(oneHundred, rateInDecimalScale, RoundingMode.HALF_UP);
 	}
 }

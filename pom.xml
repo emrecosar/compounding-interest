@@ -22,6 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		
+		<dep.junit.version>4.12</dep.junit.version>
 	</properties>
 
 	<dependencies>
@@ -39,7 +41,7 @@
    		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<!-- <version>${dep.junit.version}</version>  -->
 		</dependency>
 	</dependencies>
 

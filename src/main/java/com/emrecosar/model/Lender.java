@@ -1,4 +1,4 @@
-package com.emrecosar.ci.model;
+package com.emrecosar.model;
 
 import java.math.BigDecimal;
 

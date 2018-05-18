@@ -1,9 +1,9 @@
-package com.emrecosar.ci.file;
+package com.emrecosar.file;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -16,9 +16,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.emrecosar.ci.calculation.CalculationService;
-import com.emrecosar.ci.exception.InsufficientLoanAmountException;
-import com.emrecosar.ci.model.Lender;
+import com.emrecosar.calculation.CalculationService;
+import com.emrecosar.model.Lender;
 
 @Service
 public class LenderServiceImpl implements LenderService {
@@ -31,16 +30,30 @@ public class LenderServiceImpl implements LenderService {
 	}
 
 	@Override
-	public List<Lender> readFile(String filePath) throws IOException {
+	public List<Lender> readFile(String filePath) {
 
-		List<Lender> lenders;
-		File file = new File(filePath);
-		InputStream inputStream = new FileInputStream(file);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-		lenders = reader.lines().skip(1).map(mapToLender).collect(Collectors.toList());
-		reader.close();
-
+		List<Lender> lenders = null;
+		BufferedReader reader = null;
+		try {
+			File file = new File(filePath);
+			InputStream inputStream = new FileInputStream(file);
+			reader = new BufferedReader(new InputStreamReader(inputStream));
+			lenders = reader.lines().skip(1).map(mapToLender).collect(Collectors.toList());
+		} catch (FileNotFoundException fnfe) {
+			System.err.println("File is not found or corrupted! [file : " + filePath + "]");
+			return null;
+		} catch (NumberFormatException e) {
+			System.err.println("File is not well-formed! [file : " + filePath + "]");
+			return null;
+		} catch (Exception e) {
+			System.err.println("File operation error occured! [file : " + filePath + "]");
+			return null;
+		} finally {
+			try {
+				reader.close();
+			} catch (Exception e) {}
+		}
+		
 		return lenders;
 
 	}
@@ -56,15 +69,15 @@ public class LenderServiceImpl implements LenderService {
 	};
 
 	@Override
-	public List<Lender> selectLenders(List<Lender> lenderList, BigDecimal loanAmount)
-			throws InsufficientLoanAmountException {
+	public List<Lender> selectLenders(List<Lender> lenderList, BigDecimal loanAmount) {
 		BigDecimal remainingLoan = loanAmount;
 		List<Lender> requiredLenders = new ArrayList<>();
 		BigDecimal availableAmountToLend = calculationService.getMaximumLoanAmount(lenderList);
 
 		if (loanAmount.compareTo(availableAmountToLend) > 0) {
-			throw new InsufficientLoanAmountException(
-					"Currently, It is impossible to provide a loan for this amount! [Amount :" + loanAmount + "]");
+			// Insufficient Loan Amount
+			System.err.println("Currently, It is impossible to provide a loan for this amount! [Amount :" + loanAmount + "]");
+			return null;
 		}
 
 		Collections.sort(lenderList);

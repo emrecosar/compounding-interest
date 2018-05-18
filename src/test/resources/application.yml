@@ -11,8 +11,13 @@ logging:
       Application: WARN
     org:
       springframework: WARN
+
+interest-constant: 0.9970221
   
-installement-number: 36
+installement:
+  count-to-pay: 36
+  per-year: 12
+  year: 3
 
 loan:
   step: 100

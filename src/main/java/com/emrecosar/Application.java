@@ -1,12 +1,12 @@
-package com.emrecosar.ci;
+package com.emrecosar;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
-public class CIApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(CIApplication.class).logStartupInfo(false).run(args);
+		new SpringApplicationBuilder(Application.class).logStartupInfo(false).run(args);
 	}
 }
